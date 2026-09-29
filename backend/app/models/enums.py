@@ -1,0 +1,46 @@
+
+ITEM_TYPES = ("RAW_MAT", "AUXILIARY", "PACKAGING", "FG", "FG_FASON", "SF", "COMPONENT", "MOULD")
+MATERIAL_SOURCES = ("LAMAPLAST", "CUSTOMER")
+BOM_ROLES = ("INPUT", "OUTPUT", "BOTH")
+MATERIAL_FAMILIES = ("THERMOPLASTIC", "METAL", "WOOD", "COMPOSITE", "OTHER")
+MACHINE_GROUPS = ("INJECTION", "AUXILIARY", "TOOLSHOP")
+
+CC_TYPES = ("PRODUCTION", "SUPPORT", "COMMERCIAL", "OVERHEAD")
+ACTIVITY_LEVELS = ("UNIT", "BATCH", "PRODUCT", "FACILITY")
+ACTIVITY_STATUSES = ("PENDING", "CONFIRMED", "MODIFIED", "DELETED", "NEW")
+RESOURCE_TYPES = ("LABOR", "MACHINE", "BUILDING", "OVERHEAD", "COMMERCIAL", "ADMIN")
+
+SCENARIO_TYPES = ("BUDGET", "ACTUAL", "REVISED", "WHATIF")
+DATA_SOURCES = ("MANUAL", "SOFTONE", "EXCEL", "CALCULATED")
+
+MOULD_OWNERS = ("LAMAPLAST", "CUSTOMER")
+MOULD_TYPES = ("SINGLE", "MULTI_CAVITY", "FAMILY")
+OPERATOR_LOADS = ("0.33", "0.5", "1.0", "2.0")
+MIX_MATERIAL_TYPES = ("BASE_RESIN", "MASTERBATCH", "ADDITIVE", "FILLER")
+ASSEMBLY_TYPES = ("OWN", "FASON")
+
+BOM_STATUSES = ("DRAFT", "ACTIVE", "ARCHIVED")
+BOM_COMPONENT_TYPES = (
+    "RAW_MATERIAL", "MASTERBATCH", "ADDITIVE", "PURCHASED",
+    "COMPONENT", "SEMI_FINISHED", "ASSEMBLY_FASON",
+    "PACKAGING_PRI", "PACKAGING_SEC", "PACKAGING_TER",
+)
+OVERRIDE_TARGETS = ("ITEM", "MOULD_RUN", "MOULD", "MACHINE")
+OVERRIDE_FIELDS = (
+    "Cycles_Per_Hour", "Scrap_Pct", "Avg_Batch_Qty",          # MOULD_RUN
+    "Depreciation_Per_Cycle",                                 # MOULD
+    "Depreciation_Per_Hour", "Power_KW",                      # MACHINE
+    "Weight_kg",                                              # ITEM
+)
+
+USER_ROLES = ("ADMIN", "EXPERT", "USER")
+MODULES = ("ITEMS", "PRICES", "BOM", "MOULDS", "MACHINES", "BUILDINGS", "LABOR",
+           "COST_STRUCTURE", "GL", "DRIVERS", "SCENARIOS")
+AUDIT_ACTIONS = ("INSERT", "UPDATE", "DELETE", "LOGIN", "LOGIN_FAILED", "LOCK", "UNLOCK", "COST_RUN")
+RUN_STATUSES = ("RUNNING", "OK", "FAILED")
+
+
+def sql_in(column: str, values: tuple[str, ...], numeric: bool = False) -> str:
+    """Κείμενο για CHECK: "Item_Type IN ('RAW_MAT','FG',...)"."""
+    items = ",".join(values if numeric else (f"'{v}'" for v in values))
+    return f"{column} IN ({items})"
