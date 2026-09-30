@@ -23,8 +23,8 @@ from .enums import (
 from .mixins import AuditMixin, flag
 
 
-class GlobeDefault(AuditMixin, Base):
-    __tablename__ = "tbl_GlobalDefaults"
+class GlobalDefault(AuditMixin, Base):
+    __tablename__ = "tbl_GlobalDefault"
 
     Parameter: Mapped[str]=mapped_column(String(50),primary_key=True)
     Value: Mapped[Decimal] = mapped_column(Numeric(18, 6))
@@ -75,22 +75,22 @@ class BaseMaterial(AuditMixin, Base):
 class BSSG(AuditMixin, Base):
     __tablename__ = "tbl_BSSG"
 
-    BSSG_Coode: Mapped[str] = mapped_column(String(2), primary_key=True)
+    BSSG_Code: Mapped[str] = mapped_column(String(2), primary_key=True)
     BSSG_Name: Mapped[str] = mapped_column(Unicode(40))
     Sort_order: Mapped[int | None] = mapped_column(SmallInteger)
-    IsActive: Mapped[bool] = flag(True)
+    Is_Active: Mapped[bool] = flag(True)
     pillars:Mapped[list["CommercialPillar"]]=relationship(back_populates="bssg")
 
 
 # Commercial Pillar lookup table defines the available commercial pillars and their association with BSSG entries.
 class CommercialPillar(AuditMixin, Base):
-    __tablename__ = "tbl_CommercialPillars"
+    __tablename__ = "tbl_CommercialPillar"
 
     Pillar_Code: Mapped[str] = mapped_column(String(10), primary_key=True)
     Pillar_Name: Mapped[str] = mapped_column(Unicode(60))
-    BSSG_Code: Mapped[str] = mapped_column(ForeignKey("tbl_BSSG.BSSG_Coode"),index=True)
+    BSSG_Code: Mapped[str] = mapped_column(ForeignKey("tbl_BSSG.BSSG_Code"),index=True)
     Sort_order: Mapped[int | None] = mapped_column(SmallInteger)
-    IsActive: Mapped[bool] = flag(True)
+    Is_Active: Mapped[bool] = flag(True)
 
     bssg: Mapped["BSSG"] = relationship(back_populates="pillars")
     groups: Mapped[list["ProductGroup"]] = relationship(back_populates="pillar")
@@ -98,19 +98,19 @@ class CommercialPillar(AuditMixin, Base):
 
 # Product Group lookup table defines the available product groups and their association with commercial pillars.
 class ProductGroup(AuditMixin, Base):
-    __tablename__ = "tbl_ProductGroups"
+    __tablename__ = "tbl_ProductGroup"
 
     Group_Code: Mapped[str] = mapped_column(String(15), primary_key=True)
     Group_Name: Mapped[str] = mapped_column(Unicode(80))
-    Pillar_Code: Mapped[str] = mapped_column(ForeignKey("tbl_CommercialPillars.Pillar_Code"), index=True)
-    Sort_order: Mapped[int | None] = mapped_column(SmallInteger)
-    IsActive: Mapped[bool] = flag(True)
+    Pillar_Code: Mapped[str] = mapped_column(ForeignKey("tbl_CommercialPillar.Pillar_Code"), index=True)
+    Sort_Order: Mapped[int | None] = mapped_column(SmallInteger)
+    Is_Active: Mapped[bool] = flag(True)
 
     pillar: Mapped["CommercialPillar"] = relationship(back_populates="groups")
 
 
-class MachineCategories(AuditMixin, Base):
-    __tablename__ = "tbl_MachineCategories"
+class MachineCategory(AuditMixin, Base):
+    __tablename__ = "tbl_MachineCategory"
 
     __table_args__ = (
             CheckConstraint(sql_in("Machine_Group", MACHINE_GROUPS), name="machine_group"),

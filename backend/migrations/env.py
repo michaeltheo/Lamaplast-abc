@@ -2,11 +2,10 @@ import os
 from logging.config import fileConfig
 from pathlib import Path
 
-from dotenv import load_dotenv
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
 from alembic import context
+from app.models import Base
+from dotenv import load_dotenv
+from sqlalchemy import engine_from_config, pool
 
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
@@ -23,8 +22,9 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
-target_metadata = None
+
+
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -71,7 +71,7 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, target_metadata=target_metadata,compare_type=True
         )
 
         with context.begin_transaction():
