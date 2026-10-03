@@ -26,6 +26,14 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
+
+def compare_type(context, inspected_column, metadata_column, inspected_type, metadata_type):
+    # SQL Server derives a computed column's type from its expression and cannot
+    # ALTER it anyway, so never emit type changes for computed columns.
+    if metadata_column.computed is not None:
+        return False
+    return None  # default comparison for everything else
+
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
@@ -71,7 +79,7 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata,compare_type=True
+            connection=connection, target_metadata=target_metadata, compare_type=compare_type
         )
 
         with context.begin_transaction():

@@ -1,4 +1,6 @@
 from .base import Base
+from .bom import BOM, BOMLine
+from .items import Item, LogisticsUnit
 from .lookups import (
     BSSG,
     BaseMaterial,
@@ -9,14 +11,20 @@ from .lookups import (
     ProductGroup,
 )
 from .org import Activity, CostCenter
-from .security import AuditLog, User, UserPermission
-from .items import Item, LogisticsUnit
-from .scenarios import Scenario, ScenarioParameter, ScenarioOverride, Price, ItemVolume, SalesPrice
-from .resources import Resource, Machine, LaborResource, ResourceActivity, Building
 from .production import (
+    AssemblyOp,
     Mould,
     MouldRun,
-    MouldRunOutput,
     MouldRunMaterial,
-    AssemblyOp,
+    MouldRunOutput,
 )
+from .resources import Building, LaborResource, Machine, Resource, ResourceActivity
+from .scenarios import (
+    ItemVolume,
+    Price,
+    SalesPrice,
+    Scenario,
+    ScenarioOverride,
+    ScenarioParameter,
+)
+from .security import AuditLog, User, UserPermission

@@ -49,13 +49,13 @@ class Mould(AuditMixin, Base):
     Acquisition_Cost_EUR: Mapped[Decimal] = mapped_column(Numeric(12, 2), server_default="0")
     Residual_Value_EUR: Mapped[Decimal] = mapped_column(Numeric(12, 2), server_default="0")
     Depreciable_Value_EUR: Mapped[Decimal] = mapped_column(
-        Numeric(12, 2), Computed("Acquisition_Cost_EUR - Residual_Value_EUR", persisted=True))
+        Numeric(12, 2), Computed("CAST(Acquisition_Cost_EUR - Residual_Value_EUR AS NUMERIC(12, 2))", persisted=True))
     Life_Cycles: Mapped[int | None] = mapped_column(Integer)
     Current_Cycles: Mapped[int] = mapped_column(Integer, server_default="0")
     Wear_Pct: Mapped[Decimal | None] = mapped_column(
-        Numeric(7, 4), Computed("CAST(Current_Cycles AS DECIMAL(14,4)) / NULLIF(Life_Cycles, 0)", persisted=True))
+        Numeric(7, 4), Computed("CAST(CAST(Current_Cycles AS DECIMAL(14,4)) / NULLIF(Life_Cycles, 0) AS NUMERIC(7, 4))", persisted=True))
     Depreciation_Per_Cycle: Mapped[Decimal | None] = mapped_column(
-        Numeric(12, 6), Computed("(Acquisition_Cost_EUR - Residual_Value_EUR) / NULLIF(Life_Cycles, 0)", persisted=True))
+        Numeric(12, 6), Computed("CAST((Acquisition_Cost_EUR - Residual_Value_EUR) / NULLIF(Life_Cycles, 0) AS NUMERIC(12, 6))", persisted=True))
     QC_Factor: Mapped[int] = mapped_column(SmallInteger, server_default="2")   
     Technicians: Mapped[int | None] = mapped_column(SmallInteger)
     Year_Constructed: Mapped[int | None] = mapped_column(SmallInteger)
@@ -81,7 +81,7 @@ class MouldRun(AuditMixin, Base):
     Mould_ID: Mapped[int] = mapped_column(ForeignKey("tbl_Moulds.Mould_ID"), index=True)
     Machine_Category: Mapped[str] = mapped_column(ForeignKey("tbl_MachineCategories.Category_Code"))
     Cycles_Per_Hour: Mapped[Decimal] = mapped_column(Numeric(8, 2))
-    Sec_Per_Cycle: Mapped[Decimal] = mapped_column(Numeric(10, 3), Computed("3600.0 / Cycles_Per_Hour", persisted=True))
+    Sec_Per_Cycle: Mapped[Decimal] = mapped_column(Numeric(10, 3), Computed("CAST(3600.0 / Cycles_Per_Hour AS NUMERIC(10, 3))", persisted=True))
     Operator_Load_Factor: Mapped[Decimal] = mapped_column(Numeric(4, 2), server_default="1")
     Sprue_Runner_Total_g: Mapped[Decimal] = mapped_column(Numeric(10, 3), server_default="0")   
     Scrap_Pct: Mapped[Decimal] = mapped_column(Numeric(5, 4), server_default="0.041")
@@ -151,9 +151,9 @@ class AssemblyOp(AuditMixin, Base):
     Operation_Type: Mapped[str] = mapped_column(String(6), server_default="OWN")
     Workers_Per_Cell: Mapped[Decimal] = mapped_column(Numeric(5, 2), server_default="1")
     Units_Per_Hour: Mapped[Decimal] = mapped_column(Numeric(10, 3))
-    Sec_Per_Unit: Mapped[Decimal] = mapped_column(Numeric(10, 3), Computed("3600.0 / Units_Per_Hour", persisted=True))
+    Sec_Per_Unit: Mapped[Decimal] = mapped_column(Numeric(10, 3), Computed("CAST(3600.0 / Units_Per_Hour AS NUMERIC(10, 3))", persisted=True))
     Labor_Hrs_Per_Unit: Mapped[Decimal] = mapped_column(
-        Numeric(12, 6), Computed("Workers_Per_Cell / Units_Per_Hour", persisted=True))
+        Numeric(12, 6), Computed("CAST(Workers_Per_Cell / Units_Per_Hour AS NUMERIC(12, 6))", persisted=True))
     Sequence: Mapped[int] = mapped_column(SmallInteger, server_default="10")
     Is_Active: Mapped[bool] = flag(True)
     Notes: Mapped[str | None] = mapped_column(Unicode(200))
