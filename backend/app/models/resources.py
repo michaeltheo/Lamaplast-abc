@@ -1,6 +1,15 @@
 from decimal import Decimal
 
-from sqlalchemy import CheckConstraint, Computed, ForeignKey, Numeric, SmallInteger, String, Unicode, UniqueConstraint
+from sqlalchemy import (
+    CheckConstraint,
+    Computed,
+    ForeignKey,
+    Numeric,
+    SmallInteger,
+    String,
+    Unicode,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
