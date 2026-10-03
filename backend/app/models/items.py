@@ -76,7 +76,7 @@ class LogisticsUnit(AuditMixin, Base):
     Length_m: Mapped[Decimal | None] = mapped_column(Numeric(8, 3))
     Width_m: Mapped[Decimal | None] = mapped_column(Numeric(8, 3))
     Height_m: Mapped[Decimal | None] = mapped_column(Numeric(8, 3))
-    Volume_m3: Mapped[Decimal | None] = mapped_column(Numeric(12, 6), Computed("Length_m * Width_m * Height_m", persisted=True))
+    Volume_m3: Mapped[Decimal | None] = mapped_column(Numeric(12, 6), Computed("CAST(Length_m * Width_m * Height_m AS NUMERIC(12, 6))", persisted=True))
     Is_Informational: Mapped[bool] = flag(False)   
 
     item: Mapped[Item] = relationship(back_populates="logistics_units")

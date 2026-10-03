@@ -6,7 +6,7 @@ NAMING_CONVENTION = {
     "fk":"FK_%(table_name)s_%(column_0_name)s",
     "uq":"UQ_%(table_name)s_%(column_0_name)s",
     "ix":"IX_%(table_name)s_%(column_0_name)s",
-    "ck":"CK_%(table_name)s_%(constraint_0_name)s",
+    "ck":"CK_%(table_name)s_%(constraint_name)s",
 }
 
 class Base(DeclarativeBase):

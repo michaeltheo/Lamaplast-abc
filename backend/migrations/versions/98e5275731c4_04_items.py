@@ -86,7 +86,7 @@ def upgrade() -> None:
     sa.Column('Length_m', sa.Numeric(precision=8, scale=3), nullable=True),
     sa.Column('Width_m', sa.Numeric(precision=8, scale=3), nullable=True),
     sa.Column('Height_m', sa.Numeric(precision=8, scale=3), nullable=True),
-    sa.Column('Volume_m3', sa.Numeric(precision=12, scale=6), sa.Computed('Length_m * Width_m * Height_m', persisted=True), nullable=True),
+    sa.Column('Volume_m3', sa.Numeric(precision=12, scale=6), sa.Computed('CAST(Length_m * Width_m * Height_m AS NUMERIC(12, 6))', persisted=True), nullable=True),
     sa.Column('Is_Informational', sa.Boolean(), server_default=sa.text('0'), nullable=False),
     sa.Column('Created_At', sa.DateTime().with_variant(mssql.DATETIME2(precision=0), 'mssql'), server_default=sa.text('sysutcdatetime()'), nullable=False),
     sa.Column('Created_By', sa.String(length=50), nullable=True),
