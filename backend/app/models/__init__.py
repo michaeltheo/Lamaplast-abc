@@ -20,6 +20,7 @@ from .production import (
     MouldRunOutput,
 )
 from .resources import Building, LaborResource, Machine, Resource, ResourceActivity
+from .results import ActivityRateResult, CostResult, CostRun
 from .scenarios import (
     ItemVolume,
     Price,
