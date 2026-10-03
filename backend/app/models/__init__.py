@@ -13,3 +13,10 @@ from .security import AuditLog, User, UserPermission
 from .items import Item, LogisticsUnit
 from .scenarios import Scenario, ScenarioParameter, ScenarioOverride, Price, ItemVolume, SalesPrice
 from .resources import Resource, Machine, LaborResource, ResourceActivity, Building
+from .production import (
+    Mould,
+    MouldRun,
+    MouldRunOutput,
+    MouldRunMaterial,
+    AssemblyOp,
+)
