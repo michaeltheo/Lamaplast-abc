@@ -10,3 +10,4 @@ from .lookups import (
 )
 from .org import Activity, CostCenters
 from .security import AuditLog, User, UserPermission
+from .items import Item, LogisticsUnit
