@@ -58,7 +58,7 @@ class ScenarioParameter(AuditMixin, Base):
     __tablename__ = "tbl_ScenarioParameters"
 
     Scenario_ID: Mapped[int] = mapped_column(ForeignKey("tbl_Scenarios.Scenario_ID", ondelete="CASCADE"), primary_key=True)
-    Parameter: Mapped[str] = mapped_column(ForeignKey("tbl_GlobalDefault.Parameter"), primary_key=True)
+    Parameter: Mapped[str] = mapped_column(ForeignKey("tbl_GlobalDefaults.Parameter"), primary_key=True)
     Value: Mapped[Decimal] = mapped_column(Numeric(18, 6))
     Reason: Mapped[str | None] = mapped_column(Unicode(200))
 

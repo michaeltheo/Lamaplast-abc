@@ -73,7 +73,7 @@ def upgrade() -> None:
     sa.Column('Created_By', sa.String(length=50), nullable=True),
     sa.Column('Updated_At', sa.DateTime().with_variant(mssql.DATETIME2(precision=0), 'mssql'), nullable=True),
     sa.Column('Updated_By', sa.String(length=50), nullable=True),
-    sa.ForeignKeyConstraint(['Parameter'], ['tbl_GlobalDefault.Parameter'], name=op.f('FK_tbl_ScenarioParameters_Parameter')),
+    sa.ForeignKeyConstraint(['Parameter'], ['tbl_GlobalDefaults.Parameter'], name=op.f('FK_tbl_ScenarioParameters_Parameter')),
     sa.ForeignKeyConstraint(['Scenario_ID'], ['tbl_Scenarios.Scenario_ID'], name=op.f('FK_tbl_ScenarioParameters_Scenario_ID'), ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('Scenario_ID', 'Parameter', name=op.f('PK_tbl_ScenarioParameters'))
     )

@@ -41,9 +41,9 @@ class Item(AuditMixin, Base):
     Item_Name: Mapped[str] = mapped_column(Unicode(100))
     Item_Category_Prefix: Mapped[str] = mapped_column(ForeignKey("tbl_ItemCodeRules.Prefix"), index=True)
     BSSG_Code: Mapped[str | None] = mapped_column(ForeignKey("tbl_BSSG.BSSG_Code"), index=True)
-    Pillar_Code: Mapped[str | None] = mapped_column(ForeignKey("tbl_CommercialPillar.Pillar_Code"))
-    Group_Code: Mapped[str | None] = mapped_column(ForeignKey("tbl_ProductGroup.Group_Code"), index=True)
-    Base_Material_Code: Mapped[str | None] = mapped_column(ForeignKey("tbl_BaseMaterial.Material_Code"))
+    Pillar_Code: Mapped[str | None] = mapped_column(ForeignKey("tbl_CommercialPillars.Pillar_Code"))
+    Group_Code: Mapped[str | None] = mapped_column(ForeignKey("tbl_ProductGroups.Group_Code"), index=True)
+    Base_Material_Code: Mapped[str | None] = mapped_column(ForeignKey("tbl_BaseMaterials.Material_Code"))
     Customer_ID: Mapped[int | None] = mapped_column(ForeignKey("tbl_Customers.Customer_ID"), index=True)  # null means it's ours 
     UoM: Mapped[str] = mapped_column(Unicode(10), server_default="τεμ.")
     Weight_kg: Mapped[Decimal | None] = mapped_column(Numeric(12, 5))

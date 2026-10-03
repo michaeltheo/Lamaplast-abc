@@ -34,7 +34,7 @@ def upgrade() -> None:
     sa.Column('Updated_At', sa.DateTime().with_variant(mssql.DATETIME2(precision=0), 'mssql'), nullable=True),
     sa.Column('Updated_By', sa.String(length=50), nullable=True),
     sa.CheckConstraint("Resource_Type IN ('LABOR','MACHINE','BUILDING','OVERHEAD','COMMERCIAL','ADMIN')", name=op.f('CK_tbl_Resources_resource_type')),
-    sa.ForeignKeyConstraint(['CC_ID'], ['tbl_cost_centers.CC_ID'], name=op.f('FK_tbl_Resources_CC_ID')),
+    sa.ForeignKeyConstraint(['CC_ID'], ['tbl_CostCenters.CC_ID'], name=op.f('FK_tbl_Resources_CC_ID')),
     sa.PrimaryKeyConstraint('Resource_ID', name=op.f('PK_tbl_Resources')),
     sa.UniqueConstraint('Resource_Code', name=op.f('UQ_tbl_Resources_Resource_Code'))
     )
@@ -65,7 +65,7 @@ def upgrade() -> None:
     sa.Column('Updated_By', sa.String(length=50), nullable=True),
     sa.CheckConstraint("Cost_Basis IN ('m2','m3')", name=op.f('CK_tbl_Buildings_cost_basis')),
     sa.CheckConstraint('Utilization_Pct IS NULL OR Utilization_Pct BETWEEN 0 AND 1', name=op.f('CK_tbl_Buildings_utilization')),
-    sa.ForeignKeyConstraint(['CC_ID'], ['tbl_cost_centers.CC_ID'], name=op.f('FK_tbl_Buildings_CC_ID')),
+    sa.ForeignKeyConstraint(['CC_ID'], ['tbl_CostCenters.CC_ID'], name=op.f('FK_tbl_Buildings_CC_ID')),
     sa.ForeignKeyConstraint(['Resource_ID'], ['tbl_Resources.Resource_ID'], name=op.f('FK_tbl_Buildings_Resource_ID')),
     sa.PrimaryKeyConstraint('Building_ID', name=op.f('PK_tbl_Buildings')),
     sa.UniqueConstraint('Building_Code', 'Zone_Name', name=op.f('UQ_tbl_Buildings_Building_Code'))
@@ -92,14 +92,14 @@ def upgrade() -> None:
     sa.Column('Updated_By', sa.String(length=50), nullable=True),
     sa.CheckConstraint('Annual_Cost_EUR >= 0', name=op.f('CK_tbl_LaborResources_cost')),
     sa.CheckConstraint('Utilization_Rate IS NULL OR Utilization_Rate BETWEEN 0 AND 1.2', name=op.f('CK_tbl_LaborResources_utilization')),
-    sa.ForeignKeyConstraint(['CC_ID'], ['tbl_cost_centers.CC_ID'], name=op.f('FK_tbl_LaborResources_CC_ID')),
+    sa.ForeignKeyConstraint(['CC_ID'], ['tbl_CostCenters.CC_ID'], name=op.f('FK_tbl_LaborResources_CC_ID')),
     sa.ForeignKeyConstraint(['Resource_ID'], ['tbl_Resources.Resource_ID'], name=op.f('FK_tbl_LaborResources_Resource_ID')),
     sa.PrimaryKeyConstraint('Employee_ID', name=op.f('PK_tbl_LaborResources')),
     sa.UniqueConstraint('Employee_Code', name=op.f('UQ_tbl_LaborResources_Employee_Code'))
     )
     op.create_index(op.f('IX_tbl_LaborResources_CC_ID'), 'tbl_LaborResources', ['CC_ID'], unique=False)
     op.create_index(op.f('IX_tbl_LaborResources_Resource_ID'), 'tbl_LaborResources', ['Resource_ID'], unique=False)
-    op.create_table('tbl_ResourceActivity',
+    op.create_table('tbl_ResourceActivities',
     sa.Column('Scenario_ID', sa.Integer(), nullable=False),
     sa.Column('Resource_ID', sa.Integer(), nullable=False),
     sa.Column('Activity_ID', sa.Integer(), nullable=False),
@@ -110,11 +110,11 @@ def upgrade() -> None:
     sa.Column('Created_By', sa.String(length=50), nullable=True),
     sa.Column('Updated_At', sa.DateTime().with_variant(mssql.DATETIME2(precision=0), 'mssql'), nullable=True),
     sa.Column('Updated_By', sa.String(length=50), nullable=True),
-    sa.CheckConstraint('Share_Pct > 0 AND Share_Pct <= 1', name=op.f('CK_tbl_ResourceActivity_share')),
-    sa.ForeignKeyConstraint(['Activity_ID'], ['tbl_activity.Activity_ID'], name=op.f('FK_tbl_ResourceActivity_Activity_ID')),
-    sa.ForeignKeyConstraint(['Resource_ID'], ['tbl_Resources.Resource_ID'], name=op.f('FK_tbl_ResourceActivity_Resource_ID')),
-    sa.ForeignKeyConstraint(['Scenario_ID'], ['tbl_Scenarios.Scenario_ID'], name=op.f('FK_tbl_ResourceActivity_Scenario_ID'), ondelete='CASCADE'),
-    sa.PrimaryKeyConstraint('Scenario_ID', 'Resource_ID', 'Activity_ID', name=op.f('PK_tbl_ResourceActivity'))
+    sa.CheckConstraint('Share_Pct > 0 AND Share_Pct <= 1', name=op.f('CK_tbl_ResourceActivities_share')),
+    sa.ForeignKeyConstraint(['Activity_ID'], ['tbl_Activities.Activity_ID'], name=op.f('FK_tbl_ResourceActivities_Activity_ID')),
+    sa.ForeignKeyConstraint(['Resource_ID'], ['tbl_Resources.Resource_ID'], name=op.f('FK_tbl_ResourceActivities_Resource_ID')),
+    sa.ForeignKeyConstraint(['Scenario_ID'], ['tbl_Scenarios.Scenario_ID'], name=op.f('FK_tbl_ResourceActivities_Scenario_ID'), ondelete='CASCADE'),
+    sa.PrimaryKeyConstraint('Scenario_ID', 'Resource_ID', 'Activity_ID', name=op.f('PK_tbl_ResourceActivities'))
     )
     op.create_table('tbl_Machines',
     sa.Column('Machine_ID', sa.Integer(), autoincrement=True, nullable=False),
@@ -149,8 +149,8 @@ def upgrade() -> None:
     sa.CheckConstraint('Downtime_Pct IS NULL OR Downtime_Pct BETWEEN 0 AND 1', name=op.f('CK_tbl_Machines_downtime')),
     sa.CheckConstraint('Hours_Per_Day > 0 AND Hours_Per_Day <= 24', name=op.f('CK_tbl_Machines_hours')),
     sa.ForeignKeyConstraint(['Building_ID'], ['tbl_Buildings.Building_ID'], name=op.f('FK_tbl_Machines_Building_ID')),
-    sa.ForeignKeyConstraint(['CC_ID'], ['tbl_cost_centers.CC_ID'], name=op.f('FK_tbl_Machines_CC_ID')),
-    sa.ForeignKeyConstraint(['Category_Code'], ['tbl_MachineCategory.Category_Code'], name=op.f('FK_tbl_Machines_Category_Code')),
+    sa.ForeignKeyConstraint(['CC_ID'], ['tbl_CostCenters.CC_ID'], name=op.f('FK_tbl_Machines_CC_ID')),
+    sa.ForeignKeyConstraint(['Category_Code'], ['tbl_MachineCategories.Category_Code'], name=op.f('FK_tbl_Machines_Category_Code')),
     sa.ForeignKeyConstraint(['Resource_ID'], ['tbl_Resources.Resource_ID'], name=op.f('FK_tbl_Machines_Resource_ID')),
     sa.PrimaryKeyConstraint('Machine_ID', name=op.f('PK_tbl_Machines')),
     sa.UniqueConstraint('Machine_Code', name=op.f('UQ_tbl_Machines_Machine_Code'))
@@ -168,7 +168,7 @@ def downgrade() -> None:
     op.drop_index(op.f('IX_tbl_Machines_Category_Code'), table_name='tbl_Machines')
     op.drop_index(op.f('IX_tbl_Machines_CC_ID'), table_name='tbl_Machines')
     op.drop_table('tbl_Machines')
-    op.drop_table('tbl_ResourceActivity')
+    op.drop_table('tbl_ResourceActivities')
     op.drop_index(op.f('IX_tbl_LaborResources_Resource_ID'), table_name='tbl_LaborResources')
     op.drop_index(op.f('IX_tbl_LaborResources_CC_ID'), table_name='tbl_LaborResources')
     op.drop_table('tbl_LaborResources')

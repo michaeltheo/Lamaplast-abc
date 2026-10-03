@@ -32,7 +32,7 @@ def upgrade() -> None:
     sa.Column('Updated_By', sa.String(length=50), nullable=True),
     sa.PrimaryKeyConstraint('BSSG_Code', name=op.f('PK_tbl_BSSG'))
     )
-    op.create_table('tbl_BaseMaterial',
+    op.create_table('tbl_BaseMaterials',
     sa.Column('Material_Code', sa.String(length=5), nullable=False),
     sa.Column('Material_Name', sa.Unicode(length=40), nullable=False),
     sa.Column('Material_Family', sa.String(length=20), nullable=False),
@@ -48,9 +48,9 @@ def upgrade() -> None:
     sa.CheckConstraint("Material_Family IN ('THERMOPLASTIC','METAL','WOOD','COMPOSITE','OTHER')", name='material_family'),
     sa.CheckConstraint('Default_Regrind_Recovery BETWEEN 0 AND 1', name='regrind_recovery'),
     sa.CheckConstraint('Default_Regrind_Value BETWEEN 0 AND 1', name='regrind_value'),
-    sa.PrimaryKeyConstraint('Material_Code', name=op.f('PK_tbl_BaseMaterial'))
+    sa.PrimaryKeyConstraint('Material_Code', name=op.f('PK_tbl_BaseMaterials'))
     )
-    op.create_table('tbl_GlobalDefault',
+    op.create_table('tbl_GlobalDefaults',
     sa.Column('Parameter', sa.String(length=50), nullable=False),
     sa.Column('Value', sa.Numeric(precision=18, scale=6), nullable=False),
     sa.Column('Unit', sa.Unicode(length=20), nullable=True),
@@ -59,7 +59,7 @@ def upgrade() -> None:
     sa.Column('Created_By', sa.String(length=50), nullable=True),
     sa.Column('Updated_At', sa.DateTime().with_variant(mssql.DATETIME2(precision=0), 'mssql'), nullable=True),
     sa.Column('Updated_By', sa.String(length=50), nullable=True),
-    sa.PrimaryKeyConstraint('Parameter', name=op.f('PK_tbl_GlobalDefault'))
+    sa.PrimaryKeyConstraint('Parameter', name=op.f('PK_tbl_GlobalDefaults'))
     )
     op.create_table('tbl_ItemCodeRules',
     sa.Column('Prefix', sa.String(length=5), nullable=False),
@@ -81,7 +81,7 @@ def upgrade() -> None:
     sa.CheckConstraint("Material_Source IN ('LAMAPLAST','CUSTOMER')", name='material_source'),
     sa.PrimaryKeyConstraint('Prefix', name=op.f('PK_tbl_ItemCodeRules'))
     )
-    op.create_table('tbl_MachineCategory',
+    op.create_table('tbl_MachineCategories',
     sa.Column('Category_Code', sa.String(length=5), nullable=False),
     sa.Column('Category_Name', sa.Unicode(length=40), nullable=False),
     sa.Column('Machine_Group', sa.String(length=10), server_default='INJECTION', nullable=False),
@@ -93,9 +93,9 @@ def upgrade() -> None:
     sa.Column('Updated_At', sa.DateTime().with_variant(mssql.DATETIME2(precision=0), 'mssql'), nullable=True),
     sa.Column('Updated_By', sa.String(length=50), nullable=True),
     sa.CheckConstraint("Machine_Group IN ('INJECTION','AUXILIARY','TOOLSHOP')", name='machine_group'),
-    sa.PrimaryKeyConstraint('Category_Code', name=op.f('PK_tbl_MachineCategory'))
+    sa.PrimaryKeyConstraint('Category_Code', name=op.f('PK_tbl_MachineCategories'))
     )
-    op.create_table('tbl_CommercialPillar',
+    op.create_table('tbl_CommercialPillars',
     sa.Column('Pillar_Code', sa.String(length=10), nullable=False),
     sa.Column('Pillar_Name', sa.Unicode(length=60), nullable=False),
     sa.Column('BSSG_Code', sa.String(length=2), nullable=False),
@@ -105,11 +105,11 @@ def upgrade() -> None:
     sa.Column('Created_By', sa.String(length=50), nullable=True),
     sa.Column('Updated_At', sa.DateTime().with_variant(mssql.DATETIME2(precision=0), 'mssql'), nullable=True),
     sa.Column('Updated_By', sa.String(length=50), nullable=True),
-    sa.ForeignKeyConstraint(['BSSG_Code'], ['tbl_BSSG.BSSG_Code'], name=op.f('FK_tbl_CommercialPillar_BSSG_Code')),
-    sa.PrimaryKeyConstraint('Pillar_Code', name=op.f('PK_tbl_CommercialPillar'))
+    sa.ForeignKeyConstraint(['BSSG_Code'], ['tbl_BSSG.BSSG_Code'], name=op.f('FK_tbl_CommercialPillars_BSSG_Code')),
+    sa.PrimaryKeyConstraint('Pillar_Code', name=op.f('PK_tbl_CommercialPillars'))
     )
-    op.create_index(op.f('IX_tbl_CommercialPillar_BSSG_Code'), 'tbl_CommercialPillar', ['BSSG_Code'], unique=False)
-    op.create_table('tbl_ProductGroup',
+    op.create_index(op.f('IX_tbl_CommercialPillars_BSSG_Code'), 'tbl_CommercialPillars', ['BSSG_Code'], unique=False)
+    op.create_table('tbl_ProductGroups',
     sa.Column('Group_Code', sa.String(length=15), nullable=False),
     sa.Column('Group_Name', sa.Unicode(length=80), nullable=False),
     sa.Column('Pillar_Code', sa.String(length=10), nullable=False),
@@ -119,23 +119,23 @@ def upgrade() -> None:
     sa.Column('Created_By', sa.String(length=50), nullable=True),
     sa.Column('Updated_At', sa.DateTime().with_variant(mssql.DATETIME2(precision=0), 'mssql'), nullable=True),
     sa.Column('Updated_By', sa.String(length=50), nullable=True),
-    sa.ForeignKeyConstraint(['Pillar_Code'], ['tbl_CommercialPillar.Pillar_Code'], name=op.f('FK_tbl_ProductGroup_Pillar_Code')),
-    sa.PrimaryKeyConstraint('Group_Code', name=op.f('PK_tbl_ProductGroup'))
+    sa.ForeignKeyConstraint(['Pillar_Code'], ['tbl_CommercialPillars.Pillar_Code'], name=op.f('FK_tbl_ProductGroups_Pillar_Code')),
+    sa.PrimaryKeyConstraint('Group_Code', name=op.f('PK_tbl_ProductGroups'))
     )
-    op.create_index(op.f('IX_tbl_ProductGroup_Pillar_Code'), 'tbl_ProductGroup', ['Pillar_Code'], unique=False)
+    op.create_index(op.f('IX_tbl_ProductGroups_Pillar_Code'), 'tbl_ProductGroups', ['Pillar_Code'], unique=False)
     # ### end Alembic commands ###
 
 
 def downgrade() -> None:
     """Downgrade schema."""
     # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_index(op.f('IX_tbl_ProductGroup_Pillar_Code'), table_name='tbl_ProductGroup')
-    op.drop_table('tbl_ProductGroup')
-    op.drop_index(op.f('IX_tbl_CommercialPillar_BSSG_Code'), table_name='tbl_CommercialPillar')
-    op.drop_table('tbl_CommercialPillar')
-    op.drop_table('tbl_MachineCategory')
+    op.drop_index(op.f('IX_tbl_ProductGroups_Pillar_Code'), table_name='tbl_ProductGroups')
+    op.drop_table('tbl_ProductGroups')
+    op.drop_index(op.f('IX_tbl_CommercialPillars_BSSG_Code'), table_name='tbl_CommercialPillars')
+    op.drop_table('tbl_CommercialPillars')
+    op.drop_table('tbl_MachineCategories')
     op.drop_table('tbl_ItemCodeRules')
-    op.drop_table('tbl_GlobalDefault')
-    op.drop_table('tbl_BaseMaterial')
+    op.drop_table('tbl_GlobalDefaults')
+    op.drop_table('tbl_BaseMaterials')
     op.drop_table('tbl_BSSG')
     # ### end Alembic commands ###

@@ -62,12 +62,12 @@ def upgrade() -> None:
     sa.CheckConstraint('Fason_Base_Item_ID IS NULL OR Fason_Base_Item_ID <> Item_ID', name='fason_not_self'),
     sa.CheckConstraint('Weight_kg IS NULL OR Weight_kg >= 0', name='weight'),
     sa.ForeignKeyConstraint(['BSSG_Code'], ['tbl_BSSG.BSSG_Code'], name=op.f('FK_tbl_Items_BSSG_Code')),
-    sa.ForeignKeyConstraint(['Base_Material_Code'], ['tbl_BaseMaterial.Material_Code'], name=op.f('FK_tbl_Items_Base_Material_Code')),
+    sa.ForeignKeyConstraint(['Base_Material_Code'], ['tbl_BaseMaterials.Material_Code'], name=op.f('FK_tbl_Items_Base_Material_Code')),
     sa.ForeignKeyConstraint(['Customer_ID'], ['tbl_Customers.Customer_ID'], name=op.f('FK_tbl_Items_Customer_ID')),
     sa.ForeignKeyConstraint(['Fason_Base_Item_ID'], ['tbl_Items.Item_ID'], name=op.f('FK_tbl_Items_Fason_Base_Item_ID')),
-    sa.ForeignKeyConstraint(['Group_Code'], ['tbl_ProductGroup.Group_Code'], name=op.f('FK_tbl_Items_Group_Code')),
+    sa.ForeignKeyConstraint(['Group_Code'], ['tbl_ProductGroups.Group_Code'], name=op.f('FK_tbl_Items_Group_Code')),
     sa.ForeignKeyConstraint(['Item_Category_Prefix'], ['tbl_ItemCodeRules.Prefix'], name=op.f('FK_tbl_Items_Item_Category_Prefix')),
-    sa.ForeignKeyConstraint(['Pillar_Code'], ['tbl_CommercialPillar.Pillar_Code'], name=op.f('FK_tbl_Items_Pillar_Code')),
+    sa.ForeignKeyConstraint(['Pillar_Code'], ['tbl_CommercialPillars.Pillar_Code'], name=op.f('FK_tbl_Items_Pillar_Code')),
     sa.PrimaryKeyConstraint('Item_ID', name=op.f('PK_tbl_Items')),
     sa.UniqueConstraint('Item_Code', name=op.f('UQ_tbl_Items_Item_Code'))
     )

@@ -8,7 +8,7 @@ from .lookups import (
     MachineCategory,
     ProductGroup,
 )
-from .org import Activity, CostCenters
+from .org import Activity, CostCenter
 from .security import AuditLog, User, UserPermission
 from .items import Item, LogisticsUnit
 from .scenarios import Scenario, ScenarioParameter, ScenarioOverride, Price, ItemVolume, SalesPrice

@@ -16,7 +16,7 @@ class Resource(AuditMixin, Base):
     Resource_ID: Mapped[int] = surrogate_pk()
     Resource_Code: Mapped[str] = mapped_column(String(20), unique=True)      # RES-INJ-LAB
     Resource_Name: Mapped[str] = mapped_column(Unicode(80))
-    CC_ID: Mapped[int] = mapped_column(ForeignKey("tbl_cost_centers.CC_ID"), index=True)
+    CC_ID: Mapped[int] = mapped_column(ForeignKey("tbl_CostCenters.CC_ID"), index=True)
     Resource_Type: Mapped[str] = mapped_column(String(12))
     Is_Active: Mapped[bool] = flag(True)
     Notes: Mapped[str | None] = mapped_column(Unicode(200))
@@ -24,14 +24,14 @@ class Resource(AuditMixin, Base):
     activity_shares: Mapped[list["ResourceActivity"]] = relationship(back_populates="resource")
 
 
-# Resource Activity Table (tbl_ResourceActivity)
+# Resource Activity Table (tbl_ResourceActivities)
 class ResourceActivity(AuditMixin, Base):
-    __tablename__ = "tbl_ResourceActivity"
+    __tablename__ = "tbl_ResourceActivities"
     __table_args__ = (CheckConstraint("Share_Pct > 0 AND Share_Pct <= 1", name="share"),)
 
     Scenario_ID: Mapped[int] = mapped_column(ForeignKey("tbl_Scenarios.Scenario_ID", ondelete="CASCADE"), primary_key=True)
     Resource_ID: Mapped[int] = mapped_column(ForeignKey("tbl_Resources.Resource_ID"), primary_key=True)
-    Activity_ID: Mapped[int] = mapped_column(ForeignKey("tbl_activity.Activity_ID"), primary_key=True)
+    Activity_ID: Mapped[int] = mapped_column(ForeignKey("tbl_Activities.Activity_ID"), primary_key=True)
     Share_Pct: Mapped[Decimal] = mapped_column(Numeric(7, 6))
     Allocation_Basis: Mapped[str | None] = mapped_column(Unicode(80))      
     Notes: Mapped[str | None] = mapped_column(Unicode(200))
@@ -60,7 +60,7 @@ class Building(AuditMixin, Base):
     Nominal_Volume_m3: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), Computed("CAST(Area_m2 * Height_m AS NUMERIC(14, 2))", persisted=True))
     Useful_Volume_m3: Mapped[Decimal | None] = mapped_column(Numeric(14, 2), Computed("CAST(Area_m2 * Height_m * Utilization_Pct AS NUMERIC(14, 2))", persisted=True))
     Cost_Basis: Mapped[str] = mapped_column(String(3), server_default="m2")
-    CC_ID: Mapped[int] = mapped_column(ForeignKey("tbl_cost_centers.CC_ID"), index=True)
+    CC_ID: Mapped[int] = mapped_column(ForeignKey("tbl_CostCenters.CC_ID"), index=True)
     Resource_ID: Mapped[int | None] = mapped_column(ForeignKey("tbl_Resources.Resource_ID"), index=True)
     Depreciation_EUR: Mapped[Decimal] = mapped_column(Numeric(12, 2), server_default="0")     
     Equipment_Depr_EUR: Mapped[Decimal] = mapped_column(Numeric(12, 2), server_default="0")
@@ -83,8 +83,8 @@ class Machine(AuditMixin, Base):
     Machine_ID: Mapped[int] = surrogate_pk()
     Machine_Code: Mapped[str] = mapped_column(String(15), unique=True)       
     Description: Mapped[str] = mapped_column(Unicode(80))
-    Category_Code: Mapped[str] = mapped_column(ForeignKey("tbl_MachineCategory.Category_Code"), index=True)
-    CC_ID: Mapped[int] = mapped_column(ForeignKey("tbl_cost_centers.CC_ID"), index=True)
+    Category_Code: Mapped[str] = mapped_column(ForeignKey("tbl_MachineCategories.Category_Code"), index=True)
+    CC_ID: Mapped[int] = mapped_column(ForeignKey("tbl_CostCenters.CC_ID"), index=True)
     Resource_ID: Mapped[int | None] = mapped_column(ForeignKey("tbl_Resources.Resource_ID"), index=True)
     Building_ID: Mapped[int | None] = mapped_column(ForeignKey("tbl_Buildings.Building_ID"))
     Power_KW_Motor: Mapped[Decimal | None] = mapped_column(Numeric(8, 2))
@@ -123,7 +123,7 @@ class LaborResource(AuditMixin, Base):
     Employee_Code: Mapped[str] = mapped_column(String(15), unique=True)
     Employee_Name: Mapped[str] = mapped_column(Unicode(80))
     Labor_Category: Mapped[str] = mapped_column(Unicode(30))                  
-    CC_ID: Mapped[int] = mapped_column(ForeignKey("tbl_cost_centers.CC_ID"), index=True)
+    CC_ID: Mapped[int] = mapped_column(ForeignKey("tbl_CostCenters.CC_ID"), index=True)
     Resource_ID: Mapped[int | None] = mapped_column(ForeignKey("tbl_Resources.Resource_ID"), index=True)
     Annual_Cost_EUR: Mapped[Decimal] = mapped_column(Numeric(12, 2))
     Actual_Hours_Year: Mapped[Decimal | None] = mapped_column(Numeric(8, 2))

@@ -24,7 +24,7 @@ from .mixins import AuditMixin, flag
 
 
 class GlobalDefault(AuditMixin, Base):
-    __tablename__ = "tbl_GlobalDefault"
+    __tablename__ = "tbl_GlobalDefaults"
 
     Parameter: Mapped[str]=mapped_column(String(50),primary_key=True)
     Value: Mapped[Decimal] = mapped_column(Numeric(18, 6))
@@ -55,7 +55,7 @@ class ItemCodeRule(AuditMixin, Base):
 
 # Base material lookup table defines the available base materials and their default regrind settings.
 class BaseMaterial(AuditMixin, Base):
-    __tablename__ = "tbl_BaseMaterial"
+    __tablename__ = "tbl_BaseMaterials"
     __table_args__ = (
         CheckConstraint(sql_in("Material_Family", MATERIAL_FAMILIES), name="material_family"),
         CheckConstraint("Default_Regrind_Recovery BETWEEN 0 AND 1", name="regrind_recovery"),
@@ -84,7 +84,7 @@ class BSSG(AuditMixin, Base):
 
 # Commercial Pillar lookup table defines the available commercial pillars and their association with BSSG entries.
 class CommercialPillar(AuditMixin, Base):
-    __tablename__ = "tbl_CommercialPillar"
+    __tablename__ = "tbl_CommercialPillars"
 
     Pillar_Code: Mapped[str] = mapped_column(String(10), primary_key=True)
     Pillar_Name: Mapped[str] = mapped_column(Unicode(60))
@@ -98,11 +98,11 @@ class CommercialPillar(AuditMixin, Base):
 
 # Product Group lookup table defines the available product groups and their association with commercial pillars.
 class ProductGroup(AuditMixin, Base):
-    __tablename__ = "tbl_ProductGroup"
+    __tablename__ = "tbl_ProductGroups"
 
     Group_Code: Mapped[str] = mapped_column(String(15), primary_key=True)
     Group_Name: Mapped[str] = mapped_column(Unicode(80))
-    Pillar_Code: Mapped[str] = mapped_column(ForeignKey("tbl_CommercialPillar.Pillar_Code"), index=True)
+    Pillar_Code: Mapped[str] = mapped_column(ForeignKey("tbl_CommercialPillars.Pillar_Code"), index=True)
     Sort_Order: Mapped[int | None] = mapped_column(SmallInteger)
     Is_Active: Mapped[bool] = flag(True)
 
@@ -110,7 +110,7 @@ class ProductGroup(AuditMixin, Base):
 
 
 class MachineCategory(AuditMixin, Base):
-    __tablename__ = "tbl_MachineCategory"
+    __tablename__ = "tbl_MachineCategories"
 
     __table_args__ = (
             CheckConstraint(sql_in("Machine_Group", MACHINE_GROUPS), name="machine_group"),

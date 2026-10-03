@@ -12,9 +12,9 @@ from .enums import (
 from .mixins import AuditMixin, flag, surrogate_pk
 
 
-# Cost Centers Table (tbl_cost_centers)
-class CostCenters(AuditMixin,Base):
-    __tablename__ = 'tbl_cost_centers'
+# Cost Centers Table (tbl_CostCenters)
+class CostCenter(AuditMixin,Base):
+    __tablename__ = 'tbl_CostCenters'
     __table_args__ = (CheckConstraint(sql_in("CC_Type", CC_TYPES), name="cc_type"),)
 
     CC_ID: Mapped[int] = mapped_column(SmallInteger,primary_key=True,autoincrement=True)
@@ -30,9 +30,9 @@ class CostCenters(AuditMixin,Base):
     activities: Mapped[list["Activity"]] = relationship(back_populates="cost_center")
 
 
-# Activity Table (tbl_activity)
+# Activity Table (tbl_Activities)
 class Activity(AuditMixin, Base):
-    __tablename__ = 'tbl_activity'
+    __tablename__ = 'tbl_Activities'
     __table_args__ = (
         CheckConstraint(sql_in("Activity_Level", ACTIVITY_LEVELS), name="activity_level"),
         CheckConstraint(sql_in("Status", ACTIVITY_STATUSES), name="status"),
@@ -41,7 +41,7 @@ class Activity(AuditMixin, Base):
     Activity_ID: Mapped[int] = surrogate_pk()
     Activity_Code: Mapped[str] = mapped_column(String(12), unique=True)
     Activity_Name: Mapped[str] = mapped_column(Unicode(60))
-    CC_ID: Mapped[int] = mapped_column(ForeignKey('tbl_cost_centers.CC_ID'),index=True)
+    CC_ID: Mapped[int] = mapped_column(ForeignKey('tbl_CostCenters.CC_ID'),index=True)
     Activity_Level: Mapped[str] = mapped_column(String(10))
     ABC_Role: Mapped[str] = mapped_column(Unicode(25))
     Driver_Name: Mapped[str] = mapped_column(Unicode(40))               
@@ -50,4 +50,4 @@ class Activity(AuditMixin, Base):
     Is_Active: Mapped[bool] = flag(True)
     Notes: Mapped[str | None] = mapped_column(Unicode(200))
 
-    cost_center: Mapped[CostCenters] = relationship(back_populates="activities")
+    cost_center: Mapped[CostCenter] = relationship(back_populates="activities")
