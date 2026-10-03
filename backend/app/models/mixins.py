@@ -1,7 +1,8 @@
 from datetime import datetime
-from sqlalchemy.orm import Mapped,mapped_column
-from sqlalchemy import Boolean, DateTime,Integer,String,func,text
+
+from sqlalchemy import Boolean, DateTime, Integer, String, func, text
 from sqlalchemy.dialects.mssql import DATETIME2
+from sqlalchemy.orm import Mapped, mapped_column
 
 UtcDateTime=DateTime().with_variant(DATETIME2(0),"mssql")
 
