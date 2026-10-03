@@ -16,7 +16,7 @@ from .mixins import AuditMixin, surrogate_pk
 
 
 class GLFmeriLine(AuditMixin, Base):
-    __tablename__ = "tbl_GLFmeri"
+    __tablename__ = "tbl_GLFmeriLines"
     __table_args__ = (
         UniqueConstraint("Scenario_ID", "GL_Account"),
         CheckConstraint(sql_in("Source", DATA_SOURCES), name="source"),
@@ -38,7 +38,7 @@ class GLFmeriAllocation(AuditMixin, Base):
     __table_args__ = (UniqueConstraint("GL_Line_ID", "CC_ID", "Resource_ID"),)
 
     GL_Alloc_ID: Mapped[int] = surrogate_pk()
-    GL_Line_ID: Mapped[int] = mapped_column(ForeignKey("tbl_GLFmeri.GL_Line_ID", ondelete="CASCADE"), index=True)
+    GL_Line_ID: Mapped[int] = mapped_column(ForeignKey("tbl_GLFmeriLines.GL_Line_ID", ondelete="CASCADE"), index=True)
     CC_ID: Mapped[int] = mapped_column(ForeignKey("tbl_CostCenters.CC_ID"))
     Resource_ID: Mapped[int | None] = mapped_column(ForeignKey("tbl_Resources.Resource_ID"))  # NULL = overhead του CC
     Amount_EUR: Mapped[Decimal] = mapped_column(Numeric(14, 2))

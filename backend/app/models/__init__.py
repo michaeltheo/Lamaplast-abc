@@ -1,6 +1,6 @@
 from .base import Base
 from .bom import BOM, BOMLine
-from .items import Item, LogisticsUnit
+from .items import Customer, Item, LogisticsUnit
 from .ledger import DriverValue, GLFmeriAllocation, GLFmeriLine
 from .lookups import (
     BSSG,
