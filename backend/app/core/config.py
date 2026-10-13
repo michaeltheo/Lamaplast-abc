@@ -10,7 +10,14 @@ class Settings(BaseSettings):
     database_url: str
     app_name:str= "Lamaplast ABC"
     app_env: str = "development"  # Options: development, production, testing
-    cors_origins: list[str] = ["*"]  # List of allowed CORS origins
+    cors_origins: list[str] = ["*"] 
+
+    secret_key: str  
+    session_hours: int = 8
+    cookie_secure: bool = True
+    max_failed_logins: int = 5
+    lockout_minutes: int = 15
+    min_password_length: int = 12
 
 @lru_cache()
 def get_settings() -> Settings:

@@ -1,19 +1,18 @@
-from app.core.db import get_db
+from app.core.db import DbSession
 from app.core.pagination import MAX_PAGE_SIZE, Pagination, paginate
 from app.models import ProductGroup
 from app.schemas.lookups import ProductGroupOut
 from app.schemas.pagination import Page
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import select
-from sqlalchemy.orm import Session
 
 # Μικρό app μόνο για το test: ένα endpoint με σελιδοποίηση πάνω στις 39 ομάδες προϊόντων.
 app = FastAPI()
 
 
 @app.get("/groups", response_model=Page[ProductGroupOut])
-def groups(p: Pagination, pillar: str | None = None, db: Session = Depends(get_db)):
+def groups(p: Pagination, db: DbSession, pillar: str | None = None):
     query = select(ProductGroup).order_by(ProductGroup.Group_Code)
     if pillar is not None:
         query = query.where(ProductGroup.Pillar_Code == pillar)
