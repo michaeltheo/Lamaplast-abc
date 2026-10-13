@@ -2,7 +2,16 @@ import pytest
 from app.core.db import engine, get_db
 from app.core.security import hash_password
 from app.main import app
-from app.models import AuditLog, CostCenter, Resource, User, UserPermission
+from app.models import (
+    Activity,
+    AuditLog,
+    CostCenter,
+    Item,
+    Resource,
+    Scenario,
+    User,
+    UserPermission,
+)
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -107,3 +116,30 @@ def make_resource(db, cc_id):
         db.flush()
         return resource
     return _make
+
+
+@pytest.fixture
+def make_item(db):
+    def _make(code: str, prefix: str, **fields) -> Item:
+        item = Item(Item_Code=code, Item_Name=f"Δοκιμαστικό {code}", Item_Category_Prefix=prefix, **fields)
+        db.add(item)
+        db.flush()
+        return item
+    return _make
+
+
+@pytest.fixture
+def make_scenario(db):
+    def _make(name: str = "ZZT ανοιχτό", locked: bool = False) -> Scenario:
+        scenario = Scenario(Scenario_Name=name, Scenario_Type="WHATIF", Period_Year=2025, Is_Locked=locked)
+        db.add(scenario)
+        db.flush()
+        return scenario
+    return _make
+
+
+@pytest.fixture
+def activity_ids(db) -> list[int]:
+    """Τρεις δραστηριότητες του seed: λειτουργία μηχανής, setup, ποιοτικός έλεγχος."""
+    codes = ("2.1.1.01", "2.1.1.02", "2.1.1.03")
+    return [db.scalar(select(Activity.Activity_ID).where(Activity.Activity_Code == code)) for code in codes]

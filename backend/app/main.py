@@ -3,7 +3,21 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.core.responses import error, register_error_handlers
-from app.routers import audit, auth, buildings, customers, health, items, labor, lookups, machines, users
+from app.routers import (
+    audit,
+    auth,
+    buildings,
+    customers,
+    health,
+    items,
+    labor,
+    lookups,
+    machines,
+    mould_runs,
+    moulds,
+    resources,
+    users,
+)
 from app.schemas.response import ApiResponse, FieldError
 
 app = FastAPI(
@@ -44,3 +58,6 @@ app.include_router(customers.router)
 app.include_router(buildings.router)
 app.include_router(machines.router)
 app.include_router(labor.router)
+app.include_router(resources.router)
+app.include_router(moulds.router)
+app.include_router(mould_runs.router)
