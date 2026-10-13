@@ -2,8 +2,9 @@ import pytest
 from app.core.db import engine, get_db
 from app.core.security import hash_password
 from app.main import app
-from app.models import User, UserPermission
+from app.models import AuditLog, CostCenter, Resource, User, UserPermission
 from fastapi.testclient import TestClient
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 PASSWORD = "correct-horse-battery"
@@ -82,3 +83,27 @@ def admin(make_user, login):
 def user(make_user, login):
     make_user("test_user", "USER")
     return login("test_user")
+
+
+# --- βοηθητικά για τα masters (Φάση D) ---
+
+def audit_rows(db, table: str, key: str) -> list[AuditLog]:
+    return list(db.scalars(select(AuditLog).where(AuditLog.Table_Name == table, AuditLog.Record_Key == key)
+                           .order_by(AuditLog.Audit_ID)))
+
+
+@pytest.fixture
+def cc_id(db) -> int:
+    """Το κέντρο κόστους 2.1 (Injection Production) από το seed."""
+    return db.scalar(select(CostCenter.CC_ID).where(CostCenter.CC_Code == "2.1"))
+
+
+@pytest.fixture
+def make_resource(db, cc_id):
+    def _make(resource_type: str) -> Resource:
+        resource = Resource(Resource_Code=f"ZZT-{resource_type}", Resource_Name=f"Δοκιμαστικός {resource_type}",
+                            CC_ID=cc_id, Resource_Type=resource_type)
+        db.add(resource)
+        db.flush()
+        return resource
+    return _make
