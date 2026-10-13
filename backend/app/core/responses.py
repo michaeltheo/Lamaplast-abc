@@ -3,6 +3,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.services.errors import ServiceError
+
 
 def ok(data=None, status_code: int = status.HTTP_200_OK, message: str | None = None) -> dict:
     """Ο φάκελος κάθε επιτυχημένης απάντησης. Το status_code πρέπει να είναι ίδιο με του decorator."""
@@ -18,6 +20,10 @@ def register_error_handlers(app: FastAPI) -> None:
     @app.exception_handler(StarletteHTTPException)
     async def http_error(request: Request, exc: StarletteHTTPException):
         return error(exc.status_code, str(exc.detail), headers=exc.headers)
+
+    @app.exception_handler(ServiceError)
+    async def service_error(request: Request, exc: ServiceError):
+        return error(exc.status_code, exc.message)
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(request: Request, exc: RequestValidationError):
