@@ -1,5 +1,8 @@
 from datetime import timedelta
 
+from conftest import PASSWORD, new_client
+from sqlalchemy import select
+
 from app.core.config import settings
 from app.core.security import (
     SESSION_COOKIE,
@@ -10,8 +13,6 @@ from app.core.security import (
     verify_password,
 )
 from app.models import AuditLog
-from conftest import PASSWORD, new_client
-from sqlalchemy import select
 
 
 def audit_actions(db, username: str) -> list[str]:

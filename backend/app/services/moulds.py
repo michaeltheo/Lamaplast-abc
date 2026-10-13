@@ -1,8 +1,9 @@
+from sqlalchemy import Select, select
+from sqlalchemy.orm import Session
+
 from app.core.audit import snapshot
 from app.models import Customer, MachineCategory, Mould, User
 from app.schemas.moulds import MouldCreate, MouldUpdate
-from sqlalchemy import Select, select
-from sqlalchemy.orm import Session
 
 from . import common
 from .errors import BusinessRuleError, ConflictError

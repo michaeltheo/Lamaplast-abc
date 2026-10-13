@@ -2,9 +2,10 @@ import json
 from decimal import Decimal
 
 import pytest
-from app.models import Customer
 from conftest import audit_rows
 from sqlalchemy import select
+
+from app.models import Customer
 
 MOULD = {"Mould_Code": "ZZT-K01", "Mould_Name": "Καλούπι καρέκλας ZZT", "Acquisition_Cost_EUR": "50000",
          "Residual_Value_EUR": "5000", "Life_Cycles": 1_000_000, "Current_Cycles": 250_000}

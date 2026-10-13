@@ -1,18 +1,19 @@
 from typing import Annotated
 
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import select
+
 from app.core.audit import log_change, log_event, snapshot
 from app.core.db import DbSession
 from app.core.deps import require_role
 from app.core.pagination import Pagination, paginate
-from app.core.security import hash_password
 from app.core.responses import ok
+from app.core.security import hash_password
 from app.models import User, UserPermission
 from app.schemas.auth import UserOut
 from app.schemas.pagination import Page
-from app.schemas.users import PermissionIn, UserCreate, UserUpdate
 from app.schemas.response import ApiResponse
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
+from app.schemas.users import PermissionIn, UserCreate, UserUpdate
 
 router = APIRouter(prefix="/api/users", tags=["Users"])
 

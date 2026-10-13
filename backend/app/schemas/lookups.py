@@ -68,3 +68,40 @@ class GlobalDefaultOut(LookupOut):
     Value: Decimal
     Unit: str | None
     Description: str | None
+
+
+# --- δομή ABC: τα ID που ζητούν τα masters (CC_ID, Activity_ID, Scenario_ID) ---
+
+class CostCenterOut(LookupOut):
+    CC_ID: int
+    CC_Code: str
+    CC_Name: str
+    Functional_Direction: str
+    CC_Type: str
+    Is_Primary: bool
+    Allocation_Method: str | None
+    Is_Active: bool
+
+
+class ActivityOut(LookupOut):
+    Activity_ID: int
+    Activity_Code: str
+    Activity_Name: str
+    CC_ID: int
+    Activity_Level: str
+    ABC_Role: str
+    Driver_Name: str
+    Driver_UoM: str
+    Status: str
+    Is_Active: bool
+
+
+class ScenarioOut(LookupOut):
+    Scenario_ID: int
+    Scenario_Name: str
+    Scenario_Type: str
+    Base_Scenario_ID: int | None
+    Period_Year: int
+    Is_Locked: bool
+    Is_Baseline: bool
+    Description: str | None

@@ -2,8 +2,9 @@ import json
 from decimal import Decimal
 
 import pytest
-from app.models import AuditLog, Item
 from sqlalchemy import select
+
+from app.models import AuditLog, Item
 
 # Κωδικοί με «ZZT» ώστε να μη συγκρούονται με πραγματικά είδη της βάσης
 ITEM = {

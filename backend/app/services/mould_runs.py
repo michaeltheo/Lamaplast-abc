@@ -1,5 +1,8 @@
 from decimal import Decimal
 
+from sqlalchemy import Select, select
+from sqlalchemy.orm import Session, selectinload
+
 from app.core.audit import log_change, snapshot
 from app.models import (
     MachineCategory,
@@ -10,8 +13,6 @@ from app.models import (
     User,
 )
 from app.schemas.mould_runs import MouldRunIn, MouldRunMaterialIn, MouldRunOutputIn
-from sqlalchemy import Select, select
-from sqlalchemy.orm import Session, selectinload
 
 from . import common
 from .errors import BusinessRuleError, ConflictError, NotFoundError

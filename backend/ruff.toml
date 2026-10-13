@@ -1,0 +1,11 @@
+# Ρυθμίσεις ruff για το backend:  ruff check .
+# Με αυτό το αρχείο η ρίζα του project είναι ο φάκελος backend, άρα το «app» μετράει ως δικός μας κώδικας
+# (first-party) είτε τρέχει το ruff από εδώ είτε από το VS Code που ανοίγει όλο το repo.
+line-length = 120
+
+# Τα migrations τα γράφει το Alembic· δεν τα διορθώνουμε με το χέρι.
+extend-exclude = ["migrations"]
+
+[lint.per-file-ignores]
+# Τα models δεν αλλάζουν χωρίς συνεννόηση. Το __init__ κάνει επίτηδες import χωρίς χρήση (re-exports).
+"app/models/*" = ["F401", "I001"]

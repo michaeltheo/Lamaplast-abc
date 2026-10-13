@@ -2,8 +2,9 @@ import json
 from decimal import Decimal
 
 import pytest
-from app.models import Activity, ResourceActivity
 from conftest import audit_rows
+
+from app.models import Activity, ResourceActivity
 
 
 @pytest.fixture

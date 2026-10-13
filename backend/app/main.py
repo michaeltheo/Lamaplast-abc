@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.responses import error, register_error_handlers
 from app.routers import (
+    assembly_ops,
     audit,
     auth,
     buildings,
@@ -15,6 +16,7 @@ from app.routers import (
     machines,
     mould_runs,
     moulds,
+    prices,
     resources,
     users,
 )
@@ -61,3 +63,7 @@ app.include_router(labor.router)
 app.include_router(resources.router)
 app.include_router(moulds.router)
 app.include_router(mould_runs.router)
+app.include_router(assembly_ops.router)
+app.include_router(prices.prices_router)
+app.include_router(prices.sales_router)
+app.include_router(prices.volumes_router)

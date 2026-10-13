@@ -1,5 +1,7 @@
 from typing import Annotated
 
+from fastapi import APIRouter, Depends, status
+
 from app.core.db import DbSession
 from app.core.deps import get_current_user, require_module
 from app.core.pagination import Pagination, paginate
@@ -9,7 +11,6 @@ from app.schemas.moulds import MouldCreate, MouldOut, MouldOwner, MouldType, Mou
 from app.schemas.pagination import Page
 from app.schemas.response import ApiResponse
 from app.services import moulds as service
-from fastapi import APIRouter, Depends, status
 
 router = APIRouter(prefix="/api/moulds", tags=["Καλούπια"], dependencies=[Depends(get_current_user)])
 

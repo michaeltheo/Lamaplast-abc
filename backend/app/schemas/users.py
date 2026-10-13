@@ -1,8 +1,9 @@
 from typing import Literal
 
+from pydantic import BaseModel, Field
+
 from app.models.enums import MODULES, USER_ROLES
 from app.schemas.auth import NewPassword
-from pydantic import BaseModel, Field
 
 RoleName = Literal[*USER_ROLES]
 

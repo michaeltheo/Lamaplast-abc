@@ -1,12 +1,13 @@
 from datetime import timedelta
 
 import pytest
+from conftest import new_client
+from sqlalchemy import select
+
 from app.cli import create_admin
 from app.core.audit import log_change
 from app.core.security import utcnow
 from app.models import AuditLog, User
-from conftest import new_client
-from sqlalchemy import select
 
 
 def rows_for(db, username: str) -> list[AuditLog]:

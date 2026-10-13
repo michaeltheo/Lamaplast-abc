@@ -1,7 +1,8 @@
-from app.models import Customer, User
-from app.schemas.customers import CustomerCreate, CustomerUpdate
 from sqlalchemy import Select, select
 from sqlalchemy.orm import Session
+
+from app.models import Customer, User
+from app.schemas.customers import CustomerCreate, CustomerUpdate
 
 from . import common
 from .errors import ConflictError

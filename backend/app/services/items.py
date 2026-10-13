@@ -1,5 +1,9 @@
 from contextlib import contextmanager
 
+from sqlalchemy import Select, select
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session, selectinload
+
 from app.core.audit import log_change, snapshot
 from app.models import (
     BSSG,
@@ -13,9 +17,6 @@ from app.models import (
     User,
 )
 from app.schemas.items import ItemCreate, ItemUpdate, LogisticsUnitIn
-from sqlalchemy import Select, select
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session, selectinload
 
 from .errors import BusinessRuleError, ConflictError, NotFoundError
 

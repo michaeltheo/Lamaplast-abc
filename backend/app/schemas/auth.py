@@ -1,8 +1,9 @@
 from datetime import datetime
 from typing import Annotated
 
-from app.core.config import settings
 from pydantic import BaseModel, ConfigDict, Field
+
+from app.core.config import settings
 
 Password = Annotated[str, Field(max_length=128)]
 NewPassword = Annotated[str, Field(min_length=settings.min_password_length, max_length=128)]

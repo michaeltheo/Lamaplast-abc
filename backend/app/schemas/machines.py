@@ -1,8 +1,9 @@
 from decimal import Decimal
 from typing import Annotated
 
-from app.schemas.common import AuditedOut, Money, NotesText, PatchModel, Pct
 from pydantic import BaseModel, Field
+
+from app.schemas.common import AuditedOut, Money, NotesText, PatchModel, Pct
 
 Power = Annotated[Decimal, Field(ge=0, max_digits=8, decimal_places=2)]
 

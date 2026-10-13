@@ -1,8 +1,9 @@
 from decimal import Decimal
 from typing import Annotated
 
-from app.schemas.common import AuditedOut, Money, NotesText, PatchModel
 from pydantic import BaseModel, Field
+
+from app.schemas.common import AuditedOut, Money, NotesText, PatchModel
 
 # Όρια όπως τα CHECK της βάσης: κόστος >= 0, απασχόληση έως 1.2 (υπερωρίες)
 Hours = Annotated[Decimal, Field(ge=0, max_digits=8, decimal_places=2)]

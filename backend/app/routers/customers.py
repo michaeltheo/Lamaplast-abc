@@ -1,5 +1,7 @@
 from typing import Annotated
 
+from fastapi import APIRouter, Depends, status
+
 from app.core.db import DbSession
 from app.core.deps import get_current_user, require_module
 from app.core.pagination import Pagination, paginate
@@ -9,7 +11,6 @@ from app.schemas.customers import CustomerCreate, CustomerOut, CustomerUpdate
 from app.schemas.pagination import Page
 from app.schemas.response import ApiResponse
 from app.services import customers as service
-from fastapi import APIRouter, Depends, status
 
 # Οι πελάτες ανήκουν στην ενότητα ITEMS: όποιος γράφει είδη γράφει και πελάτες.
 router = APIRouter(prefix="/api/customers", tags=["Πελάτες"], dependencies=[Depends(get_current_user)])

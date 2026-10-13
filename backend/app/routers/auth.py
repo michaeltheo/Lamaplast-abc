@@ -1,5 +1,9 @@
 from datetime import timedelta
 
+from fastapi import APIRouter, HTTPException, Response, status
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
 from app.core.audit import log_change, log_event
 from app.core.config import settings
 from app.core.db import DbSession
@@ -18,9 +22,6 @@ from app.core.security import (
 from app.models import User
 from app.schemas.auth import ChangePasswordIn, LoginIn, UserOut
 from app.schemas.response import ApiResponse
-from fastapi import APIRouter, HTTPException, Response, status
-from sqlalchemy import select
-from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/api/auth", tags=["Auth"])
 

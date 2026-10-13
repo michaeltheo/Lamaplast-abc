@@ -2,11 +2,12 @@
 from contextlib import contextmanager
 from decimal import Decimal
 
-from app.core.audit import log_change, snapshot
-from app.models import CostCenter, Item, ItemCodeRule, Resource, Scenario, User
 from sqlalchemy import Select, inspect, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+
+from app.core.audit import log_change, snapshot
+from app.models import CostCenter, Item, ItemCodeRule, Resource, Scenario, User
 
 from .errors import BusinessRuleError, ConflictError, NotFoundError
 

@@ -1,5 +1,6 @@
-from app.schemas.common import AuditedOut, NotesText, PatchModel
 from pydantic import BaseModel, Field
+
+from app.schemas.common import AuditedOut, NotesText, PatchModel
 
 
 class CustomerCreate(BaseModel):

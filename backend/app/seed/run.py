@@ -9,8 +9,21 @@ from collections import defaultdict
 from sqlalchemy import select
 
 from app.core.db import SessionLocal
-from app.models import (BSSG, Activity, BaseMaterial, CommercialPillar, CostCenter, Customer, GlobalDefault,
-                        ItemCodeRule, MachineCategory, ProductGroup, Resource, ResourceActivity, Scenario)
+from app.models import (
+    BSSG,
+    Activity,
+    BaseMaterial,
+    CommercialPillar,
+    CostCenter,
+    Customer,
+    GlobalDefault,
+    ItemCodeRule,
+    MachineCategory,
+    ProductGroup,
+    Resource,
+    ResourceActivity,
+    Scenario,
+)
 
 from . import lookups_data as L
 from . import structure_data as S

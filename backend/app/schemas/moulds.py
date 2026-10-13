@@ -2,9 +2,10 @@ from datetime import date
 from decimal import Decimal
 from typing import Literal
 
+from pydantic import BaseModel, Field, computed_field
+
 from app.models.enums import MOULD_OWNERS, MOULD_TYPES
 from app.schemas.common import AuditedOut, Money, NotesText, PatchModel
-from pydantic import BaseModel, Field, computed_field
 
 MouldOwner = Literal[*MOULD_OWNERS]
 MouldType = Literal[*MOULD_TYPES]

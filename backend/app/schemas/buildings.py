@@ -1,8 +1,9 @@
 from decimal import Decimal
 from typing import Annotated, Literal
 
-from app.schemas.common import AuditedOut, Money, NotesText, PatchModel, Pct
 from pydantic import BaseModel, Field
+
+from app.schemas.common import AuditedOut, Money, NotesText, PatchModel, Pct
 
 # Το model δεν έχει CHECK για το Ownership και γράφει το Cost_Basis μέσα στο CHECK, όχι στο enums.py.
 # Μέχρι να μπουν εκεί (βλ. «προτεινόμενες αλλαγές στο σχήμα»), οι επιτρεπτές τιμές ορίζονται εδώ.

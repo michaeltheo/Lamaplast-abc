@@ -1,6 +1,9 @@
 from datetime import datetime
 from typing import Annotated
 
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy import select
+
 from app.core.db import DbSession
 from app.core.deps import require_role
 from app.core.pagination import Pagination, paginate
@@ -9,8 +12,6 @@ from app.models import AuditLog
 from app.schemas.audit import AuditLogOut
 from app.schemas.pagination import Page
 from app.schemas.response import ApiResponse
-from fastapi import APIRouter, Depends, Query
-from sqlalchemy import select
 
 router = APIRouter(prefix="/api/audit", tags=["Audit"], dependencies=[Depends(require_role("ADMIN"))])
 

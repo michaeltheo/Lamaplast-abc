@@ -1,8 +1,9 @@
+from sqlalchemy import Select, select
+from sqlalchemy.orm import Session
+
 from app.core.audit import snapshot
 from app.models import LaborResource, User
 from app.schemas.labor import LaborCreate, LaborUpdate
-from sqlalchemy import Select, select
-from sqlalchemy.orm import Session
 
 from . import common
 from .errors import ConflictError

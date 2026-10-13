@@ -1,7 +1,8 @@
 import pytest
-from app.main import app
 from conftest import PASSWORD
 from fastapi.testclient import TestClient
+
+from app.main import app
 
 OPERATIONS = [(method.upper(), path, operation)
               for path, methods in app.openapi()["paths"].items() for method, operation in methods.items()]

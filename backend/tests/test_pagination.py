@@ -1,11 +1,12 @@
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+from sqlalchemy import select
+
 from app.core.db import DbSession
 from app.core.pagination import MAX_PAGE_SIZE, Pagination, paginate
 from app.models import ProductGroup
 from app.schemas.lookups import ProductGroupOut
 from app.schemas.pagination import Page
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
-from sqlalchemy import select
 
 # Μικρό app μόνο για το test: ένα endpoint με σελιδοποίηση πάνω στις 39 ομάδες προϊόντων.
 app = FastAPI()

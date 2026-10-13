@@ -1,9 +1,10 @@
 from decimal import Decimal
 from typing import Literal
 
+from pydantic import BaseModel, Field
+
 from app.models.enums import RESOURCE_TYPES
 from app.schemas.common import AuditedOut, NotesText, OrmOut, PatchModel
-from pydantic import BaseModel, Field
 
 ResourceType = Literal[*RESOURCE_TYPES]
 

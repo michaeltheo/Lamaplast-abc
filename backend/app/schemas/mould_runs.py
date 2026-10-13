@@ -1,9 +1,10 @@
 from decimal import Decimal
 from typing import Annotated, Literal
 
+from pydantic import BaseModel, Field, field_validator
+
 from app.models.enums import MIX_MATERIAL_TYPES, OPERATOR_LOADS
 from app.schemas.common import AuditedOut, NotesText, OrmOut, Pct
-from pydantic import BaseModel, Field, field_validator
 
 Grams = Annotated[Decimal, Field(max_digits=10, decimal_places=3)]
 Minutes = Annotated[Decimal, Field(ge=0, max_digits=6, decimal_places=1)]

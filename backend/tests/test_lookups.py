@@ -1,4 +1,5 @@
 import pytest
+
 from app.models import CommercialPillar
 
 
@@ -12,6 +13,8 @@ from app.models import CommercialPillar
         ("product-groups", 39),
         ("machine-categories", 8),
         ("global-defaults", 10),
+        ("cost-centers", 9),
+        ("activities", 24),
     ],
 )
 def test_lookup_returns_all_seeded_rows(user, path, expected):
@@ -68,3 +71,22 @@ def test_audit_columns_are_not_exposed(user):
 
 def test_lookups_require_login(client):
     assert client.get("/api/lookups/bssg").status_code == 401
+
+
+# --- δομή ABC: τα ID που ζητούν τα masters ---
+
+def test_activities_filtered_by_cost_center(user, cc_id):
+    activities = user.get("/api/lookups/activities", params={"cc_id": cc_id}).json()["data"]["items"]
+    assert [a["Activity_Code"] for a in activities] == ["2.1.1.01", "2.1.1.02", "2.1.1.03", "2.1.1.04"]
+    assert {a["CC_ID"] for a in activities} == {cc_id}
+
+
+def test_scenarios_show_which_are_locked(user, make_scenario):
+    make_scenario("ZZT ανοιχτό")
+    make_scenario("ZZT κλειδωμένο", locked=True)
+
+    def names(**params):
+        items = user.get("/api/lookups/scenarios", params={"page_size": 200, **params}).json()["data"]["items"]
+        return {s["Scenario_Name"]: s["Is_Locked"] for s in items if s["Scenario_Name"].startswith("ZZT")}
+    assert names() == {"ZZT ανοιχτό": False, "ZZT κλειδωμένο": True}
+    assert names(open_only="true") == {"ZZT ανοιχτό": False}

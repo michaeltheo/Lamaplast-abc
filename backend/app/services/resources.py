@@ -1,5 +1,8 @@
 from decimal import Decimal
 
+from sqlalchemy import Select, func, select
+from sqlalchemy.orm import Session
+
 from app.core.audit import log_change, snapshot
 from app.models import (
     Activity,
@@ -11,8 +14,6 @@ from app.models import (
     User,
 )
 from app.schemas.resources import ActivityShareIn, ResourceCreate, ResourceUpdate
-from sqlalchemy import Select, func, select
-from sqlalchemy.orm import Session
 
 from . import common
 from .errors import BusinessRuleError, ConflictError

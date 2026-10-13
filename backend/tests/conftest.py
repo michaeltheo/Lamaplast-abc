@@ -1,4 +1,8 @@
 import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
 from app.core.db import engine, get_db
 from app.core.security import hash_password
 from app.main import app
@@ -12,9 +16,6 @@ from app.models import (
     User,
     UserPermission,
 )
-from fastapi.testclient import TestClient
-from sqlalchemy import select
-from sqlalchemy.orm import Session
 
 PASSWORD = "correct-horse-battery"
 _PASSWORD_HASH = hash_password(PASSWORD)  # μία φορά: το argon2 είναι επίτηδες αργό

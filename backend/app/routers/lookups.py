@@ -1,29 +1,36 @@
+from fastapi import APIRouter, Depends
+from sqlalchemy import select
+
 from app.core.db import DbSession
 from app.core.deps import get_current_user
 from app.core.pagination import Pagination, paginate
 from app.core.responses import ok
 from app.models import (
     BSSG,
+    Activity,
     BaseMaterial,
     CommercialPillar,
+    CostCenter,
     GlobalDefault,
     ItemCodeRule,
     MachineCategory,
     ProductGroup,
+    Scenario,
 )
 from app.schemas.lookups import (
+    ActivityOut,
     BaseMaterialOut,
     BSSGOut,
     CommercialPillarOut,
+    CostCenterOut,
     GlobalDefaultOut,
     ItemCodeRuleOut,
     MachineCategoryOut,
     ProductGroupOut,
+    ScenarioOut,
 )
 from app.schemas.pagination import Page
 from app.schemas.response import ApiResponse
-from fastapi import APIRouter, Depends
-from sqlalchemy import select
 
 router = APIRouter(prefix="/api/lookups", tags=["Lookups"], dependencies=[Depends(get_current_user)])
 
@@ -82,3 +89,31 @@ def machine_categories(p: Pagination, db: DbSession, group: str | None = None):
 @router.get("/global-defaults", response_model=ApiResponse[Page[GlobalDefaultOut]])
 def global_defaults(p: Pagination, db: DbSession):
     return ok(paginate(db, select(GlobalDefault).order_by(GlobalDefault.Parameter), p))
+
+
+# --- δομή ABC (μόνο ανάγνωση· η διαχείριση σεναρίων έρχεται στη Φάση G) ---
+
+@router.get("/cost-centers", response_model=ApiResponse[Page[CostCenterOut]])
+def cost_centers(p: Pagination, db: DbSession, active_only: bool = True):
+    query = select(CostCenter).order_by(CostCenter.CC_Code)
+    if active_only:
+        query = query.where(CostCenter.Is_Active)
+    return ok(paginate(db, query, p))
+
+
+@router.get("/activities", response_model=ApiResponse[Page[ActivityOut]])
+def activities(p: Pagination, db: DbSession, cc_id: int | None = None, active_only: bool = True):
+    query = select(Activity).order_by(Activity.Activity_Code)
+    if cc_id is not None:
+        query = query.where(Activity.CC_ID == cc_id)
+    if active_only:
+        query = query.where(Activity.Is_Active)
+    return ok(paginate(db, query, p))
+
+
+@router.get("/scenarios", response_model=ApiResponse[Page[ScenarioOut]])
+def scenarios(p: Pagination, db: DbSession, open_only: bool = False):
+    query = select(Scenario).order_by(Scenario.Period_Year.desc(), Scenario.Scenario_Name)
+    if open_only:
+        query = query.where(~Scenario.Is_Locked)
+    return ok(paginate(db, query, p))

@@ -3,9 +3,10 @@ from decimal import Decimal
 from types import SimpleNamespace
 
 import pytest
-from app.models import MouldRunMaterial
 from conftest import audit_rows
 from sqlalchemy import func, select
+
+from app.models import MouldRunMaterial
 
 
 @pytest.fixture

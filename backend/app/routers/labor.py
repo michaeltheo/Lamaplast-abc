@@ -1,5 +1,7 @@
 from typing import Annotated
 
+from fastapi import APIRouter, Depends, status
+
 from app.core.db import DbSession
 from app.core.deps import CurrentUser, require_module
 from app.core.pagination import Pagination, paginate
@@ -9,7 +11,6 @@ from app.schemas.labor import LaborCreate, LaborOut, LaborUpdate
 from app.schemas.pagination import Page
 from app.schemas.response import ApiResponse
 from app.services import labor as service
-from fastapi import APIRouter, Depends, status
 
 router = APIRouter(prefix="/api/labor", tags=["Εργαζόμενοι"])
 

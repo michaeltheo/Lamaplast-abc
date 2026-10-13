@@ -2,8 +2,9 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Self
 
-from app.schemas.common import OrmOut
 from pydantic import BaseModel, Field, field_validator, model_validator
+
+from app.schemas.common import OrmOut
 
 # --- Logistics units ---
 

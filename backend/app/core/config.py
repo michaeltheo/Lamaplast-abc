@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     lockout_minutes: int = 15
     min_password_length: int = 12
 
-@lru_cache()
+@lru_cache
 def get_settings() -> Settings:
     return Settings()
 

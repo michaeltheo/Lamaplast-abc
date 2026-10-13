@@ -1,13 +1,14 @@
 import json
 
 import pytest
-from app.core.db import get_db
-from app.core.deps import require_module, require_role
-from app.models import AuditLog, User
 from conftest import PASSWORD, new_client
 from fastapi import Depends, FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import select
+
+from app.core.db import get_db
+from app.core.deps import require_module, require_role
+from app.models import AuditLog, User
 
 NEW_USER = {"Username": "test_new", "Full_Name": "Νέος Χρήστης", "Email": "new@example.com",
             "Role": "EXPERT", "password": "temporary-pass-1"}
